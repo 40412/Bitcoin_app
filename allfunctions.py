@@ -56,7 +56,7 @@ def highest_volume(data):
             volume = vol
             date_of_highest = date
 
-    return "Date: " + str(timestamp_to_readable_date(date_of_highest / 1000)) + " Volume: " + str(volume) + " euros"
+    return " " + str(timestamp_to_readable_date(date_of_highest / 1000)) + " Volume: " + str(volume) + " euros"
 
 def lowest_and_highest_price(data):
     prices = data
@@ -92,3 +92,11 @@ def lowest_and_highest_price(data):
         l.append(low)
         l.append(high)
         return l
+
+def is_valid(datestring):
+    
+    try:
+        datetime.datetime.strptime(datestring, "%d/%m/%Y")
+        return True
+    except ValueError:
+        return False

@@ -1,5 +1,4 @@
 from tkinter import *
-from allfunctions import date_to_timestamp, get_data, lowest_and_highest_price
 import allfunctions
 
 class MyWindow:
@@ -20,21 +19,27 @@ class MyWindow:
         self.vol.place(x=30, y=420)
         self.h_and_l = Text(win, width=90)
         self.h_and_l.place(x=30, y=440)
+
     def ButtonClicked(self):
-        prices = {}
-        to_date = allfunctions.date_to_timestamp(self.inputto.get()) + 3600
-        from_date = allfunctions.date_to_timestamp(self.inputfrom.get())
-        allfunctions.get_day_price(from_date, to_date, prices)
-        bear = allfunctions.calculate_bearish(prices)
-        highest_vol = allfunctions.highest_volume(allfunctions.get_data(from_date, to_date))
-        low_and_high = allfunctions.lowest_and_highest_price(prices)
-        self.bearish.insert(END, "The longest bearish trend: " + str(bear) + " days.")
-        self.vol.insert(END, "Highest trading volume: " + str(highest_vol))
-        if len(low_and_high) == 2:
-            self.h_and_l.insert(END, "Best day to buy: " + low_and_high[0])
-            self.h_and_l.insert(END, " Best day to sell: " + low_and_high[1])
-        else:
-            self.h_and_l.insert(END, low_and_high[0])
+        self.bearish.delete('1.0', END)
+        self.vol.delete('1.0', END)
+        self.h_and_l.delete('1.0', END)
+        if allfunctions.is_valid(self.inputfrom.get()) and allfunctions.is_valid(self.inputto.get()):
+            to_date = allfunctions.date_to_timestamp(self.inputto.get()) + 3600
+            from_date = allfunctions.date_to_timestamp(self.inputfrom.get())
+            prices = {}
+            allfunctions.get_day_price(from_date, to_date, prices)
+            bear = allfunctions.calculate_bearish(prices)
+            highest_vol = allfunctions.highest_volume(allfunctions.get_data(from_date, to_date))
+            low_and_high = allfunctions.lowest_and_highest_price(prices)
+            self.bearish.insert(END, "The longest bearish trend: " + str(bear) + " days.")
+            self.vol.insert(END, "Highest trading volume: " + str(highest_vol))
+            if len(low_and_high) == 2:
+                self.h_and_l.insert(END, "Best day to buy: " + low_and_high[0] + '\n')
+                self.h_and_l.insert(END, "Best day to sell: " + low_and_high[1])
+            else:
+                self.h_and_l.insert(END, low_and_high[0])
+        else: self.bearish.insert(END, "Incorrect data format")
         
 window = Tk()
 mywin=MyWindow(window)
