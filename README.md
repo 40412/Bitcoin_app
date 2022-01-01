@@ -3,4 +3,5 @@
 Download the current production version of Python.\
 \
 Install Pycoingecko:\
-    <code>pip install pycoingecko</code>
+    <code>pip install pycoingecko</code>\
+Run app_gui.py file
